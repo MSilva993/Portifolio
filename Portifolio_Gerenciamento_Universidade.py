@@ -82,7 +82,9 @@ def autenticar_coordenador():
         time.sleep(2)
         limpar_tela()
         return False
-    
+
+
+#Armazenamento de dados    
 # Função para salvar dados em um arquivo .txt
 def salvar_dados():
     """Salva os dados dos eventos e inscrições em arquivos .txt."""
@@ -113,6 +115,8 @@ def carregar_dados():
     except IOError as e:
         print(f"Falha ao carregar os dados: {e}")
 
+
+#Gerenciamento de EVENTOS
 # Função para cadastrar novos eventos
 def cadastrar_evento():
     """Cadastra novos eventos."""
@@ -224,6 +228,7 @@ def exibir_evento(filtro_status=None):
 
 # Função para exibir todos os eventos cadastrados
 def exibir_evento():
+    limpar_tela()
     """Exibe todos os eventos cadastrados."""
     if not evento:
         print("Sem Evento cadastrado")  # Informa se não houver eventos cadastrados
@@ -232,7 +237,7 @@ def exibir_evento():
         for i, (nome_evento, detalhes) in enumerate(evento.items(), start=1):
             exibir_detalhes_evento(i, nome_evento, detalhes)
         print()  # Linha em branco para melhorar a legibilidade
-
+        
 # Função para obter um índice válido do usuário
 def obter_indice_valido(mensagem):
     """Obtém um índice válido do usuário."""
@@ -258,6 +263,8 @@ def obter_evento_por_indice(indice):
         print(f"Falha ao acessar evento: {ie}")
         return None
 
+
+#Gerenciamento de Incrições
 # Função para inscrever um aluno no evento
 def inscrever_aluno():
     """Inscreve um aluno em um evento."""
@@ -346,7 +353,7 @@ def exibir_inscritos():
                             limpar_tela()
                 else:
                     print(f"Sem inscritos no evento '{nome_evento.title()}'.\n")
-                    time.sleep(2)  # Espera 2 segundos antes de limpar a tela
+                    time.sleep(5)  # Espera 5 segundos antes de limpar a tela
                     limpar_tela()
             else:
                 print("Evento não encontrado. Verifique o número do evento e tente novamente.\n")
@@ -441,6 +448,7 @@ def loop_principal():
     """Executa o loop principal do programa."""
     carregar_dados()
     while True:
+        limpar_tela()  # Limpa a tela antes de exibir o menu principal
         print("________Bem-vindo ao Gerenciador de Eventos UniFECAF________ \n")
         print("(1) Coordenador")
         print("(2) Aluno")
@@ -455,6 +463,34 @@ def loop_principal():
             salvar_dados()
             print("Saindo do sistema. Até logo!\n")
             break
+
+# Função para gerenciar o menu do aluno
+def menu_aluno():
+    """Gerencia as opções do menu do aluno."""
+    while True:
+        limpar_tela()  # Limpa a tela antes de exibir o menu do aluno
+        exibir_menu_aluno()
+        try:
+            escolha_opcao = int(input("Qual opção você deseja? ").strip())
+            if escolha_opcao == 1:
+                exibir_evento()
+            elif escolha_opcao == 2:
+                inscrever_aluno()
+            elif escolha_opcao == 3:
+                voltar_ao_menu_principal()
+                break
+            else:
+                print("Por favor, escolha uma opção válida.")
+        except ValueError:
+            print("Por favor, insira um número válido.")
+        input("Pressione ENTER para voltar ao menu do aluno...")
+        limpar_tela()
+
+# Função para voltar ao menu principal e limpar a tela
+def voltar_ao_menu_principal():
+    """Volta ao menu principal e limpa a tela."""
+    limpar_tela()
+    loop_principal()  # Chama o loop principal para retornar ao menu principal
 
 def obter_escolha_perfil():
     """Obtém a escolha do perfil do usuário."""
@@ -487,27 +523,7 @@ def exibir_menu_coordenador():
     print("(5) Cancelar Evento")
     print("(6) Excluir Eventos Cancelados")
     print("(7) Voltar ao Menu Principal \n")
-
-# Função para gerenciar o menu do aluno
-def menu_aluno():
-    """Gerencia as opções do menu do aluno."""
-    while True:
-        exibir_menu_aluno()
-        try:
-            escolha_opcao = int(input("Qual opção você deseja? ").strip())
-            if escolha_opcao == 1:
-                exibir_evento()
-            elif escolha_opcao == 2:
-                inscrever_aluno()
-            elif escolha_opcao == 3:
-                break
-            else:
-                print("Por favor, escolha uma opção válida.")
-        except ValueError:
-            print("Por favor, insira um número válido.")
-        input("Pressione ENTER para voltar ao menu do aluno...")
-        limpar_tela()
-
+    
 # Função para gerenciar o menu do coordenador
 def menu_coordenador():
     """Gerencia as opções do menu do coordenador."""
